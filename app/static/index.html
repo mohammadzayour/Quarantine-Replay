@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quarantine Replay</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">QR</span>
+      <div>
+        <h1>Quarantine Replay</h1>
+        <p>Indirect prompt injection vs. backend authorization</p>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip sim">Simulation · synthetic data only</span>
+      <span class="chip" id="incident-chip"></span>
+    </div>
+    <div class="controls">
+      <button id="btn-run" class="btn primary" type="button">▶ Run demo (fixture)</button>
+      <button id="btn-live-poisoned" class="btn live" type="button">Run live model · poisoned log</button>
+      <button id="btn-live-clean" class="btn live" type="button">Run live model · clean log</button>
+      <button id="btn-reset" class="btn ghost" type="button">↺ Reset</button>
+    </div>
+  </header>
+
+  <p class="lede">
+    An attacker wrote a fake approval into a log that the AI responder reads. The resulting tool call is
+    replayed, unchanged, against two backends: one executes any well-formed call, the other requires a real
+    approval stored on the server.
+  </p>
+  <p class="lede live-line" id="live-hint"></p>
+
+  <ol class="steps" id="steps"></ol>
+
+  <main>
+    <section class="row top">
+      <article class="panel" id="evidence-panel">
+        <header class="panel-head">
+          <h2>Source log · workstation-17</h2>
+          <span class="tag" id="evidence-scenario"></span>
+        </header>
+        <ul class="log" id="evidence"></ul>
+      </article>
+      <article class="panel" id="capture-panel">
+        <header class="panel-head">
+          <h2>Proposed tool call</h2>
+          <span class="tag untrusted">untrusted input</span>
+        </header>
+        <div id="capture"></div>
+      </article>
+    </section>
+
+    <section class="replay" id="replay" aria-label="Side-by-side replay"></section>
+
+    <section class="row bottom">
+      <article class="panel" id="analyst-panel">
+        <header class="panel-head">
+          <h2>Analyst console</h2>
+          <span class="tag trusted">trusted path</span>
+        </header>
+        <div id="analyst"></div>
+      </article>
+      <article class="panel" id="timeline-panel">
+        <header class="panel-head">
+          <h2>Timeline</h2>
+          <span class="muted small">select an event to inspect it</span>
+        </header>
+        <ol class="timeline" id="timeline"></ol>
+      </article>
+    </section>
+  </main>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" hidden aria-label="Event details"></aside>
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
